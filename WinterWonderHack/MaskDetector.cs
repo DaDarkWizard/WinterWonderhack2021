@@ -33,7 +33,7 @@ namespace WinterWonderHack
         {            
             for (i = 0; i< 8; i++)
             {
-                rawImage = new Mat("../../../Pictures/maskless" + i + ".png", ImreadModes.Grayscale);
+                rawImage = new Mat("../../../Pictures/default" + i + ".png", ImreadModes.Grayscale);
                 rawImage.Line(0, 0, 10, 10, new Scalar { Val0 = 10, Val1 = 10, Val2 = 10, Val3 = 10 });
 
                 int threshhold = 10;
@@ -81,7 +81,6 @@ namespace WinterWonderHack
  
                 
             Size duck = new Size { Height = 7, Width = 7 };
-            //Cv2.GaussianBlur(processed, moreProcessed, duck, 0, 5);
             Size goose = new Size { Height = 3, Width = 3 };
             
             Cv2.Threshold(rawImage, processed, 96, 128, (ThresholdTypes) 1);
@@ -94,9 +93,22 @@ namespace WinterWonderHack
             //Cv2.GaussianBlur(moreProcessed, moreProcessed, duck, 0, 5);
             veryProcessed = findDifference(processed, moreProcessed);
 
+            //Console.WriteLine(processed.Depth());
+
+            /*RotatedRect mask = Cv2.MinAreaRect((MatType.CV_32S) processed);
+            
+            Point2f[] maskCorners = new Point2f[4];
+            maskCorners = mask.Points();
+            for (int n=0; n<4; n++)
+            {
+                processed.Line((Point)maskCorners[n], (Point)maskCorners[(n + 1) % 4], 2, 2);
+            }*/
+
+
             Cv2.ImShow("Bobby" + i, processed);
             Cv2.ImShow("Bobby #" + i, moreProcessed);
             Cv2.ImShow("Bobby $" + i, veryProcessed);
+            
         }
 
         Mat findDifference(Mat image0, Mat image1)
