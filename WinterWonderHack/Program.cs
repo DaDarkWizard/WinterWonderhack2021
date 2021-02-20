@@ -11,6 +11,7 @@ namespace WinterWonderHack
         static void Main(string[] args)
         {
             Console.Write("Do not lick the cat");
+            Console.Read();
         }
     }
 }
