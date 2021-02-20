@@ -103,10 +103,11 @@ namespace WinterWonderHack
                 //Cv2.DestroyWindow("Bobby" + i);
                 //await Task.Delay(1);
                 Cv2.DestroyAllWindows();
+                Thread.Sleep(500);
             }
             Console.WriteLine("Out!");
             Console.Read();
-            Thread.Sleep(500);
+            
             //Cv2.ImShow()
         }
 
