@@ -10,8 +10,7 @@ namespace WinterWonderHack
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Do not lick the cat");
-            Console.Read();
+            Console.Write("Do not lick the cat");
         }
     }
 }
