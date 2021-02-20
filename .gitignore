@@ -1,6 +1,6 @@
-.vs/
-bin/
-obj/
-WinterWonderHack/bin/
-WinterWonderHack/obj/
+.vs/**
+**/bin/**
+**/obj/**
+
+
 
