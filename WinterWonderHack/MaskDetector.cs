@@ -1,6 +1,7 @@
 ﻿using OpenCvSharp;
 using OpenCvSharp.Dnn;
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,9 +30,14 @@ namespace WinterWonderHack
 
         public void Run()
         {            
-            for (i = 0; i< 8; i++)
+            foreach (string fileImage in Directory.EnumerateFiles("../../../Pictures/", "*.png"))
             {
-                rawImage = new Mat("../../../Pictures/default" + i + ".png");
+                int[] topAveColors = new int[3];
+                int[] botAveColors = new int[3];
+                int totalDiff = 0;
+                System.Media.SoundPlayer player = new System.Media.SoundPlayer("../../../honk.wav");
+
+                rawImage = new Mat(fileImage);
                 rawImage.CvtColor(ColorConversionCodes.RGBA2BGR);
                 var rects = detectFaces(rawImage);
                 processed = new Mat(rawImage, rects[0]);
@@ -59,9 +65,13 @@ namespace WinterWonderHack
                 Cv2.NamedWindow("Bobby" + i, WindowFlags.Normal);
                 Cv2.MoveWindow("Bobby" + i, 0, 0);
 
-                System.Media.SoundPlayer player = new System.Media.SoundPlayer("../../../honk.wav");
-                player.Play();
+                topAveColors = colorAverage(top);
+                botAveColors = colorAverage(bottom);
 
+                for (int p = 0; p < 3; p++)
+                    totalDiff += Math.Abs(topAveColors[p] - botAveColors[p]);
+                if (totalDiff >= 100)
+                    player.Play();
 
                 while (true)
                 {
@@ -118,7 +128,31 @@ namespace WinterWonderHack
 
             return faces;
         }
+        
+        int[] colorAverage(Mat image)
+        {
+            int[] colors = new int[3];
+            Mat aveColor = new Mat(image.Rows, image.Cols, MatType.CV_8UC1);
+            Scalar final = new Scalar();
 
+            for (int k = 0; k < image.Rows; k++)
+            {
+                for (int m = 0; m < image.Cols; m++)
+                {
+                    Vec3b pix = image.At<Vec3b>(k, m);
+
+                    for(int n=0; n<3; n++) 
+                        colors[n] += pix[n];
+
+                }
+            }
+            for (int n = 0; n < 3; n++) colors[n] /= (image.Rows*image.Cols);
+
+            //System.Media.SoundPlayer player = new System.Media.SoundPlayer("../../../honk.wav");
+            //player.Play();
+
+            return colors;
+        }
 
     }
 }
