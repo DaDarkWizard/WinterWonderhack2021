@@ -17,7 +17,13 @@ namespace WinterWonderHack
             Cv2.NamedWindow("Bobby", WindowFlags.Normal);
             Cv2.ImShow("Bobby", x);
             Cv2.StartWindowThread();
-
+            while (true)
+            {
+                int key = Cv2.WaitKey();
+                if (key == 27)
+                    break;
+            }
+            
             ImageEncodingParam param = new ImageEncodingParam(ImwriteFlags.PngStrategy, (int)ImwritePNGFlags.StrategyDefault);
             x.SaveImage("../../../Output/output1.png", new ImageEncodingParam[] {param});
 
