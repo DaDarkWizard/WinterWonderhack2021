@@ -13,6 +13,7 @@ namespace WinterWonderHack
         {
             Mat x = new Mat("../../../Pictures/default0.png", ImreadModes.Grayscale);
             //x.SaveImage("../../../Output/output1.png", );
+            //imshow("Test",x);
         }
     }
 }
