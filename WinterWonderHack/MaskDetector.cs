@@ -33,7 +33,7 @@ namespace WinterWonderHack
                 Cv2.MoveWindow("Bobby" + i, 0, 0);
             
                 Cv2.CreateTrackbar("Lower Canny", "Bobby" + i, ref threshhold, 20, TrackbarHandlers);
-
+                
                 
 
                 
@@ -100,7 +100,10 @@ namespace WinterWonderHack
                     if (dist > 10.0) difference.At<byte>(k, m) = 255;
                 }
             }
-            return difference;
+            return difference; 
+            
+            System.Media.SoundPlayer player = new System.Media.SoundPlayer("../../../honk.wav");
+            player.Play();
         }
     }
 }
