@@ -65,7 +65,7 @@ namespace WinterWonderHack
             Cv2.ImShow("Bobby" + i, processed);
             Size duck = new Size { Height = 7, Width = 7 };
             Cv2.GaussianBlur(processed, moreProcessed, duck, 0, 0);
-            Cv2.ImShow("Bobby #" + i, processed);
+            Cv2.ImShow("Bobby #" + i, moreProcessed);
             
             
         }
