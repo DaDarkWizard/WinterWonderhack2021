@@ -29,7 +29,7 @@ namespace WinterWonderHack
                     if (key == 27)
                         break;
                 }
-                Cv2.DestroyWindow("Bobbly #" + i);
+                Cv2.DestroyWindow("Bobby #" + i);
                 ImageEncodingParam param = new ImageEncodingParam(ImwriteFlags.PngStrategy, (int)ImwritePNGFlags.StrategyDefault);
                 rawImage.SaveImage("../../../Output/output1.png", new ImageEncodingParam[] { param });
             }
