@@ -33,7 +33,7 @@ namespace WinterWonderHack
                 Cv2.MoveWindow("Bobby" + i, 0, 0);
             
                 Cv2.CreateTrackbar("Lower Canny", "Bobby" + i, ref threshhold, 20, TrackbarHandlers);
-
+                
                 
 
                 
@@ -61,13 +61,15 @@ namespace WinterWonderHack
         {
             processed = new Mat();
             moreProcessed = new Mat();
-            Cv2.Canny(rawImage, processed, (pos * 25), 245);
-            Cv2.ImShow("Bobby" + i, processed);
+            Cv2.Canny(rawImage, processed, (pos * 25), 255);
+            Cv2.ImShow("Bobby" + i, rawImage);
+            
             Size duck = new Size { Height = 7, Width = 7 };
             Cv2.GaussianBlur(processed, moreProcessed, duck, 0, 0);
             Cv2.ImShow("Bobby #" + i, moreProcessed);
-            
-            
+
+            System.Media.SoundPlayer player = new System.Media.SoundPlayer("../../../honk.wav");
+            player.Play();
         }
     }
 }
