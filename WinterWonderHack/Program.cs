@@ -12,6 +12,7 @@ namespace WinterWonderHack
         {
             Console.WriteLine("Do not lick the cat");
             var detector = new MaskDetector();
+            detector.Start();
             detector.Run();
             
             //Console.Read();

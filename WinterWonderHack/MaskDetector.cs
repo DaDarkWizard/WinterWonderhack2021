@@ -1,4 +1,5 @@
 ﻿using OpenCvSharp;
+using OpenCvSharp.Dnn;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,12 +8,26 @@ using System.Threading.Tasks;
 
 namespace WinterWonderHack
 {
+
     class MaskDetector
     {
+        Net netDet;
+        Net netRecogn;
         Mat rawImage;
         Mat processed = new Mat();
         Mat moreProcessed = new Mat();
         int i = 0;
+
+        public void Start()
+        {
+            Console.WriteLine("Loading models...");
+            netDet = CvDnn.ReadNetFromCaffe("../../../face_detector.prototxt", "../../../face_detector.caffemodel");
+            netRecogn = CvDnn.ReadNetFromTorch("../../../face_recognition.t7");
+            var img = new Mat("../../../Pictures/maskless0.png");
+            img.CvtColor(ColorConversionCodes.RGBA2BGR);
+            detectFaces(img);
+            Console.WriteLine("Models Loaded.");
+        }
 
         public void Run()
         {            
@@ -63,7 +78,7 @@ namespace WinterWonderHack
             processed = new Mat();
             moreProcessed = new Mat();
             Mat veryProcessed = new Mat();
-                
+ 
                 
             Size duck = new Size { Height = 7, Width = 7 };
             //Cv2.GaussianBlur(processed, moreProcessed, duck, 0, 5);
@@ -105,5 +120,54 @@ namespace WinterWonderHack
             System.Media.SoundPlayer player = new System.Media.SoundPlayer("../../../honk.wav");
             player.Play();
         }
+
+        List<Rect> detectFaces(Mat image)
+        {
+            var blob = CvDnn.BlobFromImage(image, 1, new Size { Height = 192, Width=144 },
+                            new Scalar {Val0=104, Val1=117,Val2=123,Val3=0 }, false, false);
+
+            netDet.SetInput(blob);
+            var output = netDet.Forward();
+
+            List<Rect> faces = new List<Rect>();
+
+            Console.WriteLine("Output: Width={0}, Height={1}", output.Size().Width, output.Size().Height);
+
+            /*
+            //IntPtr i;
+            int n = output.Size();
+
+            for (var i = 0, n = output.data32F.length; i < n; i += 7) {
+                var confidence = output.data32F[i + 2];
+                var left = output.data32F[i + 3] * img.cols;
+                var top = output.data32F[i + 4] * img.rows;
+                var right = output.data32F[i + 5] * img.cols;
+                var bottom = output.data32F[i + 6] * img.rows;
+                left = Math.min(Math.max(0, left), img.cols - 1);
+                right = Math.min(Math.max(0, right), img.cols - 1);
+                bottom = Math.min(Math.max(0, bottom), img.rows - 1);
+                top = Math.min(Math.max(0, top), img.rows - 1);
+
+                if (confidence > 0.5 && left < right && top < bottom)
+                {
+                    faces.push({ x: left, y: top, width: right - left, height: bottom - top})
+    }
+            }
+            blob.delete();
+            out.delete();
+
+            unsafe
+            {
+                output.ForEachAsInt32((int* value, int* position) =>
+                {
+                    Console.WriteLine("{0} hailing from output[{1}]", *value, *position);
+                });
+            }
+            */
+
+            return faces;
+        }
+
+
     }
 }
