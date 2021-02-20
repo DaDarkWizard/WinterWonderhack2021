@@ -28,7 +28,7 @@ namespace WinterWonderHack
             rawImage.SaveImage("../../../Output/output1.png", new ImageEncodingParam[] {param});
 
 
-            
+
             //Cv2.ImShow()
         }
     }
