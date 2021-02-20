@@ -24,16 +24,17 @@ namespace WinterWonderHack
 
         public void Start()
         {
+            FileStream x;
             if (!File.Exists("./config.txt"))
             {
-                FileStream x = File.Open("./config.txt", FileMode.OpenOrCreate);
+                x = File.Open("./config.txt", FileMode.OpenOrCreate);
                 StreamWriter writer = new StreamWriter(x);
                 writer.WriteLine("150");
                 writer.Flush();
                 writer.Close();
                 x.Dispose();
             }
-            FileStream x = File.OpenRead("./config.txt");
+            x = File.OpenRead("./config.txt");
             StreamReader reader = new StreamReader(x);
             compareLimit = int.Parse(reader.ReadLine());
             reader.Close();
