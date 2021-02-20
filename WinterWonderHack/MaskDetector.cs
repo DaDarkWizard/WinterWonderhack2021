@@ -11,6 +11,7 @@ namespace WinterWonderHack
     {
         Mat rawImage;
         Mat processed = new Mat();
+        Mat moreProcessed = new Mat();
         int i = 0;
 
         public void Run()
@@ -59,11 +60,14 @@ namespace WinterWonderHack
         void TrackbarHandlers(int pos, IntPtr userData)
         {
             processed = new Mat();
+            moreProcessed = new Mat();
             Cv2.Canny(rawImage, processed, (pos * 25), 245);
             Cv2.ImShow("Bobby" + i, processed);
+            Size duck = new Size { Height = 7, Width = 7 };
+            Cv2.GaussianBlur(processed, moreProcessed, duck, 0, 0);
             Cv2.ImShow("Bobby #" + i, processed);
-            Size duck = new Size{ Height=7, Width=7 };
-            Cv2.GaussianBlur(processed, processed, duck, 0, 0);
+            
+            
         }
     }
 }
