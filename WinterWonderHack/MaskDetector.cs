@@ -14,7 +14,7 @@ namespace WinterWonderHack
             Mat x = new Mat("../../../Pictures/default0.png", ImreadModes.Grayscale);
 
             ImageEncodingParam param = new ImageEncodingParam(ImwriteFlags.PngStrategy, (int)ImwritePNGFlags.StrategyDefault);
-            x.SaveImage("../../../Output/output1.png", new ImageEncodingParam[] {param});
+            x.SaveImage("output1.png", new ImageEncodingParam[] {param});
 
         }
     }
