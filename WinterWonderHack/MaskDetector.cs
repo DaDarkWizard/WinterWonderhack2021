@@ -40,7 +40,8 @@ namespace WinterWonderHack
                 int totalDiff = 0;
                 System.Media.SoundPlayer player = new System.Media.SoundPlayer("../../../honk.wav");
 
-                rawImage = new Mat(fileImage);
+                video.Retrieve(rawImage);
+                //rawImage = new Mat(fileImage);
                 rawImage.CvtColor(ColorConversionCodes.RGBA2BGR);
                 var rects = detectFaces(rawImage);
                 processed = new Mat(rawImage, rects[0]);
