@@ -19,6 +19,7 @@ namespace WinterWonderHack
         Mat processed = new Mat();
         Mat moreProcessed = new Mat();
         int i = 0;
+        DateTime lastPlayed = DateTime.Now;
         
 
         public void Start()
@@ -40,14 +41,14 @@ namespace WinterWonderHack
                 int totalDiff = 0;
                 System.Media.SoundPlayer player = new System.Media.SoundPlayer("../../../honk.wav");
 
-                video.Retrieve(rawImage);
+                rawImage = video.RetrieveMat();
                 
                 //rawImage = new Mat(fileImage);
                 rawImage.CvtColor(ColorConversionCodes.RGBA2BGR);
                 var rects = detectFaces(rawImage);
                 if(rects.Count < 1)
                 {
-                    await Task.Delay(1);
+                    Console.WriteLine("Ope");
                     continue;
                 }
                 processed = new Mat(rawImage, rects[0]);
@@ -63,37 +64,48 @@ namespace WinterWonderHack
                     Height = processed.Height / 3
                 });
 
-                Cv2.ImShow("Top", top);
-                Cv2.NamedWindow("Top");
-                Cv2.MoveWindow("Top", processed.Width, 0);
+                //Cv2.ImShow("Top", top);
+                //Cv2.NamedWindow("Top");
+                //Cv2.MoveWindow("Top", processed.Width, 0);
 
-                Cv2.ImShow("Bottom", bottom);
-                Cv2.NamedWindow("Bottom");
-                Cv2.MoveWindow("Bottom", processed.Width, top.Height + 60);
+                //Cv2.ImShow("Bottom", bottom);
+                //Cv2.NamedWindow("Bottom");
+                //Cv2.MoveWindow("Bottom", processed.Width, top.Height + 60);
 
-                Cv2.ImShow("Bobby" + i, processed);
-                Cv2.NamedWindow("Bobby" + i, WindowFlags.Normal);
-                Cv2.MoveWindow("Bobby" + i, 0, 0);
+                //Cv2.ImShow("Bobby" + i, processed);
+                //Cv2.NamedWindow("Bobby" + i, WindowFlags.Normal);
+                //Cv2.MoveWindow("Bobby" + i, 0, 0);
 
                 topAveColors = colorAverage(top);
                 botAveColors = colorAverage(bottom);
 
                 for (int p = 0; p < 3; p++)
                     totalDiff += Math.Abs(topAveColors[p] - botAveColors[p]);
-                if (totalDiff >= 100)
-                    player.Play();
 
-                while (true)
+
+                Console.WriteLine(totalDiff);
+                if (totalDiff >= 200)
                 {
-                    int key = Cv2.WaitKey();
-                    if (key == 27) //esc key
-                        break;
+                    if ((DateTime.Now - lastPlayed).Seconds > .5)
+                    { 
+                        player.Play();
+                        lastPlayed = DateTime.Now;
+                    }
+                    //player.O
                 }
+
+                //while (true)
+                //{
+                    //int key = Cv2.WaitKey();
+                    //if (key == 27) //esc key
+                    //    break;
+                //}
                 //Cv2.DestroyWindow("Bobby" + i);
                 //await Task.Delay(1);
-                //Cv2.DestroyAllWindows();
+                Cv2.DestroyAllWindows();
             }
-            
+            Console.WriteLine("Out!");
+            Console.Read();
             
             //Cv2.ImShow()
         }
@@ -131,9 +143,8 @@ namespace WinterWonderHack
                     bottom = Math.Min(Math.Max(0, bottom), image.Rows - 1);
                     top = Math.Min(Math.Max(0, top), image.Rows - 1);
 
-                    if (confidence > 0.5 && left < right && top < bottom)
+                    if (confidence > 0.5 && left < right && top < bottom && val1 == 0 && val2 == 1)
                     {
-                        Console.WriteLine("Confidence achieved! Values: {0}, {1}, {2}", val1, val2, confidence);
                         faces.Add(new Rect(){ X=left, Y= top, Width= right - left, Height= bottom - top});
                         i += 7;
                     }
