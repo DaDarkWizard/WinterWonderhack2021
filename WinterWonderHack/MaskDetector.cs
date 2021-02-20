@@ -5,7 +5,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 
 namespace WinterWonderHack
 {
@@ -98,7 +98,7 @@ namespace WinterWonderHack
 
 
                 Console.WriteLine(totalDiff);
-                if (totalDiff >= 200)
+                if (totalDiff <= 100)
                 {
                     if ((DateTime.Now - lastPlayed).Seconds > .5)
                     { 
@@ -117,6 +117,7 @@ namespace WinterWonderHack
                 //Cv2.DestroyWindow("Bobby" + i);
                 //await Task.Delay(1);
                 Cv2.DestroyAllWindows();
+                Thread.Sleep(500);
             }
             Console.WriteLine("Out!");
             Console.Read();
