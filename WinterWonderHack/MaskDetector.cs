@@ -78,8 +78,6 @@ namespace WinterWonderHack
 
             List<Rect> faces = new List<Rect>();
 
-            Console.WriteLine(sizeof(double));
-
             unsafe
             {
                 int i = 0;
