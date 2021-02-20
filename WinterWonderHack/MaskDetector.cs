@@ -11,34 +11,34 @@ namespace WinterWonderHack
     {
         Mat rawImage;
         Mat processed = new Mat();
+        int i = 0;
 
         public void Run()
         {            
-            for (int i = 0; i< 8; i++)
+            for (i = 0; i< 8; i++)
             {
                 rawImage = new Mat("../../../Pictures/default" + i + ".png", ImreadModes.Grayscale);
                 rawImage.Line(0, 0, 10, 10, new Scalar { Val0 = 10, Val1 = 10, Val2 = 10, Val3 = 10 });
 
-                int threshhold = 100;
-                Mat processed = new Mat();
+                int threshhold = 10;
+                Cv2.ResizeWindow("Bobby" + i, new Size { Height = rawImage.Height / 2, Width = rawImage.Width / 2 });
+                TrackbarHandlers(threshhold, new IntPtr { });
 
-                Cv2.Canny(rawImage, processed, 150, 245);
-
-                Cv2.NamedWindow("Bobby", WindowFlags.Normal);
-                Cv2.ImShow("Bobby", rawImage);
+                Cv2.NamedWindow("Bobby" + i, WindowFlags.Normal);
+                
 
                 // Reasonable window size time.
-                Cv2.ResizeWindow("Bobby", new Size { Height = rawImage.Height / 2, Width = rawImage.Width / 2 });
-                Cv2.MoveWindow("Bobby", 0, 0);
+                
+                Cv2.MoveWindow("Bobby" + i, 0, 0);
             
-                Cv2.CreateTrackbar("Lower Canny", "Bobby", ref threshhold, 100, TrackbarHandlers);
+                Cv2.CreateTrackbar("Lower Canny", "Bobby" + i, ref threshhold, 20, TrackbarHandlers);
 
-                Size duck = new Size(7, 7);
+                
 
-                Cv2.Canny(rawImage, rawImage, 150, 245);
-                Cv2.GaussianBlur(rawImage, rawImage, duck, 0, 0);
+                
                 Cv2.NamedWindow("Bobby #" + i, WindowFlags.Normal);
-                Cv2.ImShow("Bobby #" + i, rawImage);
+               
+
                 Cv2.StartWindowThread();
                 while (true)
                 {
@@ -47,6 +47,7 @@ namespace WinterWonderHack
                         break;
                 }
                 Cv2.DestroyWindow("Bobby #" + i);
+                Cv2.DestroyWindow("Bobby" + i);
                 ImageEncodingParam param = new ImageEncodingParam(ImwriteFlags.PngStrategy, (int)ImwritePNGFlags.StrategyDefault);
                 rawImage.SaveImage("../../../Output/output1.png", new ImageEncodingParam[] { param });
             }
@@ -57,8 +58,12 @@ namespace WinterWonderHack
 
         void TrackbarHandlers(int pos, IntPtr userData)
         {
-            Cv2.Canny(rawImage, processed, pos, 245);
-
+            processed = new Mat();
+            Cv2.Canny(rawImage, processed, (pos * 25), 245);
+            Cv2.ImShow("Bobby" + i, processed);
+            Cv2.ImShow("Bobby #" + i, processed);
+            Size duck = new Size{ Height=7, Width=7 };
+            Cv2.GaussianBlur(processed, processed, duck, 0, 0);
         }
     }
 }
