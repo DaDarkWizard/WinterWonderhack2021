@@ -74,8 +74,11 @@ namespace WinterWonderHack
 
                 for (int p = 0; p < 3; p++)
                     totalDiff += Math.Abs(topAveColors[p] - botAveColors[p]);
-                if (totalDiff >= 100)
+                if (totalDiff >= 200)
+                {
+                    Console.WriteLine(totalDiff);
                     player.Play();
+                }
 
                 while (true)
                 {
@@ -85,7 +88,7 @@ namespace WinterWonderHack
                 }
                 //Cv2.DestroyWindow("Bobby" + i);
                 //await Task.Delay(1);
-                //Cv2.DestroyAllWindows();
+                Cv2.DestroyAllWindows();
             }
             
             
