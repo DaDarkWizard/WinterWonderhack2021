@@ -34,8 +34,8 @@ namespace WinterWonderHack
                 rawImage = new Mat("../../../Pictures/default" + i + ".png");
                 rawImage.CvtColor(ColorConversionCodes.RGBA2BGR);
                 var rects = detectFaces(rawImage);
-                rawImage = new Mat(rawImage, rects[0]);
-                Cv2.ImShow("Bobby" + i, rawImage);
+                processed = new Mat(rawImage, rects[0]);
+                Cv2.ImShow("Bobby" + i, processed);
 
                 Cv2.NamedWindow("Bobby" + i, WindowFlags.Normal);
                 
