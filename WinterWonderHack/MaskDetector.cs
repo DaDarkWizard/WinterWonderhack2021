@@ -81,9 +81,11 @@ namespace WinterWonderHack
 
                 for (int p = 0; p < 3; p++)
                     totalDiff += Math.Abs(topAveColors[p] - botAveColors[p]);
+
+
+                Console.WriteLine(totalDiff);
                 if (totalDiff >= 200)
                 {
-                    Console.WriteLine((DateTime.Now - lastPlayed).Seconds);
                     if ((DateTime.Now - lastPlayed).Seconds > .5)
                     { 
                         player.Play();
@@ -125,7 +127,6 @@ namespace WinterWonderHack
 
             unsafe
             {
-                Console.WriteLine("BREAK");
                 int i = 0;
                 for(float* a = (float*)output.Data.ToPointer(); a + 5 < output.DataEnd.ToPointer(); a += 7)
                 {
@@ -144,7 +145,6 @@ namespace WinterWonderHack
 
                     if (confidence > 0.5 && left < right && top < bottom && val1 == 0 && val2 == 1)
                     {
-                        Console.WriteLine("Confidence achieved! Values: {0}, {1}, {2}", val1, val2, confidence);
                         faces.Add(new Rect(){ X=left, Y= top, Width= right - left, Height= bottom - top});
                         i += 7;
                     }
