@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BFDE1712-4906-4FBC-B5BB-80AB304E2268}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		honk.wav = honk.wav
 	EndProjectSection
 EndProject
 Global
