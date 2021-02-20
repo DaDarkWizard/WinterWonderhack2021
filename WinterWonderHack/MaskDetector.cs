@@ -20,10 +20,24 @@ namespace WinterWonderHack
         Mat moreProcessed = new Mat();
         int i = 0;
         DateTime lastPlayed = DateTime.Now;
-        
+        int compareLimit;
 
         public void Start()
         {
+            if (!File.Exists("./config.txt"))
+            {
+                FileStream x = File.Open("./config.txt", FileMode.OpenOrCreate);
+                StreamWriter writer = new StreamWriter(x);
+                writer.WriteLine("150");
+                writer.Flush();
+                writer.Close();
+                x.Dispose();
+            }
+            FileStream x = File.OpenRead("./config.txt");
+            StreamReader reader = new StreamReader(x);
+            compareLimit = int.Parse(reader.ReadLine());
+            reader.Close();
+            x.Dispose();
             Console.WriteLine("Loading models...");
             netDet = CvDnn.ReadNetFromCaffe("../../../face_detector.prototxt", "../../../face_detector.caffemodel");
             netRecogn = CvDnn.ReadNetFromTorch("../../../face_recognition.t7");
