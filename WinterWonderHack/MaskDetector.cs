@@ -11,19 +11,24 @@ namespace WinterWonderHack
     {
         public void Run()
         {
-            Mat x = new Mat("../../../Pictures/default0.png", ImreadModes.Grayscale);
-          
-           
+            Mat rawImage = new Mat("../../../Pictures/default0.png", ImreadModes.Grayscale);
+            rawImage.Line(0, 0, 10, 10, new Scalar { Val0 = 10, Val1 = 10, Val2 = 10, Val3 = 10 });
+            
             Cv2.NamedWindow("Bobby", WindowFlags.Normal);
-            Cv2.ImShow("Bobby", x);
+            Cv2.ImShow("Bobby", rawImage);
             Cv2.StartWindowThread();
-
+            while (true)
+            {
+                int key = Cv2.WaitKey();
+                if (key == 27)
+                    break;
+            }
+            
             ImageEncodingParam param = new ImageEncodingParam(ImwriteFlags.PngStrategy, (int)ImwritePNGFlags.StrategyDefault);
-            x.SaveImage("../../../Output/output1.png", new ImageEncodingParam[] {param});
-            x.Canny(x, x, 0, 300, 3);
+            rawImage.SaveImage("../../../Output/output1.png", new ImageEncodingParam[] {param});
 
 
-
+            
             //Cv2.ImShow()
         }
     }
