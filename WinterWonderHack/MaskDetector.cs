@@ -11,11 +11,13 @@ namespace WinterWonderHack
     {
         public void Run()
         {
-            Mat rawImage = new Mat("../../../Pictures/default7.png", ImreadModes.Grayscale);
+            Mat rawImage = new Mat("../../../Pictures/default0.png", ImreadModes.Grayscale);
             rawImage.Line(0, 0, 10, 10, new Scalar { Val0 = 10, Val1 = 10, Val2 = 10, Val3 = 10 });
-
-            Cv2.Canny(rawImage, rawImage, 150, 245);
             
+            Size duck = new Size(5, 5);
+            
+            Cv2.Canny(rawImage, rawImage, 150, 245);
+            Cv2.GaussianBlur(rawImage, rawImage, duck,0,0);
             Cv2.NamedWindow("Bobby", WindowFlags.Normal);
             Cv2.ImShow("Bobby", rawImage);
             Cv2.StartWindowThread();
