@@ -35,16 +35,29 @@ namespace WinterWonderHack
                 rawImage.CvtColor(ColorConversionCodes.RGBA2BGR);
                 var rects = detectFaces(rawImage);
                 processed = new Mat(rawImage, rects[0]);
+
+                Mat top = new Mat(processed, new Rect() { X = processed.Width / 4, Y = processed.Height / 20,
+                    Width = processed.Width / 2, Height = processed.Height / 3 });
+                
+                Mat bottom = new Mat(processed, new Rect()
+                {
+                    X = processed.Width / 4,
+                    Y = processed.Height - (processed.Height / 20) - (processed.Height / 3),
+                    Width = processed.Width / 2,
+                    Height = processed.Height / 3
+                });
+
+                Cv2.ImShow("Top", top);
+                Cv2.NamedWindow("Top");
+                Cv2.MoveWindow("Top", processed.Width, 0);
+
+                Cv2.ImShow("Bottom", bottom);
+                Cv2.NamedWindow("Bottom");
+                Cv2.MoveWindow("Bottom", processed.Width, top.Height + 60);
+
                 Cv2.ImShow("Bobby" + i, processed);
-
                 Cv2.NamedWindow("Bobby" + i, WindowFlags.Normal);
-                
-
-                // Reasonable window size time.
-                
                 Cv2.MoveWindow("Bobby" + i, 0, 0);
-            
-
 
                 System.Media.SoundPlayer player = new System.Media.SoundPlayer("../../../honk.wav");
                 player.Play();
@@ -56,7 +69,8 @@ namespace WinterWonderHack
                     if (key == 27) //esc key
                         break;
                 }
-                Cv2.DestroyWindow("Bobby" + i);
+                //Cv2.DestroyWindow("Bobby" + i);
+                Cv2.DestroyAllWindows();
             }
             
             
