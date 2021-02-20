@@ -20,8 +20,8 @@ namespace WinterWonderHack
 
                 Cv2.Canny(rawImage, rawImage, 150, 245);
                 Cv2.GaussianBlur(rawImage, rawImage, duck, 0, 0);
-                Cv2.NamedWindow("Bobby", WindowFlags.Normal);
-                Cv2.ImShow("Bobby", rawImage);
+                Cv2.NamedWindow("Bobby #" + i, WindowFlags.Normal);
+                Cv2.ImShow("Bobby #" + i, rawImage);
                 Cv2.StartWindowThread();
                 while (true)
                 {
@@ -29,7 +29,7 @@ namespace WinterWonderHack
                     if (key == 27)
                         break;
                 }
-
+                Cv2.DestroyWindow("Bobbly #" + i);
                 ImageEncodingParam param = new ImageEncodingParam(ImwriteFlags.PngStrategy, (int)ImwritePNGFlags.StrategyDefault);
                 rawImage.SaveImage("../../../Output/output1.png", new ImageEncodingParam[] { param });
             }
