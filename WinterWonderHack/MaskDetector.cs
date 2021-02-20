@@ -97,15 +97,11 @@ namespace WinterWonderHack
 
                     if (confidence > 0.5 && left < right && top < bottom)
                     {
-                        Console.WriteLine("Confidence good: {0}", confidence);
                         faces.Add(new Rect(){ X=left, Y= top, Width= right - left, Height= bottom - top});
                         i += 7;
                     }
                 }
-                Console.WriteLine(*((int*)(output.Data + sizeof(int)).ToPointer()));
-                Console.WriteLine(*((int*)(output.Data + 3 * sizeof(Int32)).ToPointer()));
             }
-            Console.WriteLine("Output: Width={0}, Height={1}", output.Size().Width, output.Size().Height);
 
 
             return faces;
