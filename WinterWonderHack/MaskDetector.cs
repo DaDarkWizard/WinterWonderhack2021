@@ -41,9 +41,15 @@ namespace WinterWonderHack
                 System.Media.SoundPlayer player = new System.Media.SoundPlayer("../../../honk.wav");
 
                 video.Retrieve(rawImage);
+                
                 //rawImage = new Mat(fileImage);
                 rawImage.CvtColor(ColorConversionCodes.RGBA2BGR);
                 var rects = detectFaces(rawImage);
+                if(rects.Count < 1)
+                {
+                    await Task.Delay(1);
+                    continue;
+                }
                 processed = new Mat(rawImage, rects[0]);
 
                 Mat top = new Mat(processed, new Rect() { X = processed.Width / 4, Y = processed.Height / 20,
@@ -115,6 +121,9 @@ namespace WinterWonderHack
                 int i = 0;
                 for(float* a = (float*)output.Data.ToPointer(); a + 5 < output.DataEnd.ToPointer(); a += 7)
                 {
+
+                    float val1 = a[i];
+                    float val2 = a[i + 1];
                     float confidence = ((float*)a)[i + 2];
                     int left = (int)(a[i + 3] * image.Cols);
                     int top = (int)(a[i + 4] * image.Rows);
@@ -127,6 +136,7 @@ namespace WinterWonderHack
 
                     if (confidence > 0.5 && left < right && top < bottom)
                     {
+                        Console.WriteLine("Confidence achieved! Values: {0}, {1}, {2}", val1, val2, confidence);
                         faces.Add(new Rect(){ X=left, Y= top, Width= right - left, Height= bottom - top});
                         i += 7;
                     }
