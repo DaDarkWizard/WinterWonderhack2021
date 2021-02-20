@@ -18,7 +18,7 @@ namespace WinterWonderHack
         {            
             for (i = 0; i< 8; i++)
             {
-                rawImage = new Mat("../../../Pictures/default" + i + ".png", ImreadModes.Grayscale);
+                rawImage = new Mat("../../../Pictures/maskless" + i + ".png", ImreadModes.Grayscale);
                 rawImage.Line(0, 0, 10, 10, new Scalar { Val0 = 10, Val1 = 10, Val2 = 10, Val3 = 10 });
 
                 int threshhold = 10;
