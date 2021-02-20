@@ -12,6 +12,7 @@ namespace WinterWonderHack
         public void Run()
         {
             Mat rawImage = new Mat("../../../Pictures/default0.png", ImreadModes.Grayscale);
+            Mat edges;
             rawImage.Line(0, 0, 10, 10, new Scalar { Val0 = 10, Val1 = 10, Val2 = 10, Val3 = 10 });
             
             Cv2.NamedWindow("Bobby", WindowFlags.Normal);
@@ -26,6 +27,7 @@ namespace WinterWonderHack
             
             ImageEncodingParam param = new ImageEncodingParam(ImwriteFlags.PngStrategy, (int)ImwritePNGFlags.StrategyDefault);
             rawImage.SaveImage("../../../Output/output1.png", new ImageEncodingParam[] {param});
+            Cv2.Canny(rawImage, rawImage, 0, 100, 3);
 
 
 
