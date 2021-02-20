@@ -36,6 +36,8 @@ namespace WinterWonderHack
         {            
             while(true)
             {
+                int opeCounter = 0;
+                int loopCounter = 1;
                 int[] topAveColors = new int[3];
                 int[] botAveColors = new int[3];
                 int totalDiff = 0;
@@ -49,6 +51,9 @@ namespace WinterWonderHack
                 if(rects.Count < 1)
                 {
                     Console.WriteLine("Ope");
+                    opeCounter++;
+                    if(opeCounter>10 & loopCounter>10)
+                        video = VideoCapture.FromCamera(1);
                     continue;
                 }
                 processed = new Mat(rawImage, rects[0]);
@@ -104,11 +109,14 @@ namespace WinterWonderHack
                 //await Task.Delay(1);
                 Cv2.DestroyAllWindows();
                 Thread.Sleep(500);
+                if (loopCounter <= 10)
+                    loopCounter++;
             }
             Console.WriteLine("Out!");
             Console.Read();
-            
+
             //Cv2.ImShow()
+            
         }
 
 
