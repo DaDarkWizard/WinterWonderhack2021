@@ -14,24 +14,28 @@ namespace WinterWonderHack
         Net netDet;
         Net netRecogn;
         Mat rawImage;
+        VideoCapture video;
         Mat processed = new Mat();
         Mat moreProcessed = new Mat();
         int i = 0;
+        
 
         public void Start()
         {
             Console.WriteLine("Loading models...");
             netDet = CvDnn.ReadNetFromCaffe("../../../face_detector.prototxt", "../../../face_detector.caffemodel");
             netRecogn = CvDnn.ReadNetFromTorch("../../../face_recognition.t7");
-            
+            video = VideoCapture.FromCamera(0);
+            rawImage = new Mat(new Size(video.FrameWidth, video.FrameHeight), MatType.CV_8UC4);
             Console.WriteLine("Models Loaded.");
         }
 
-        public void Run()
+        public async void Run()
         {            
-            for (i = 0; i< 8; i++)
+            while(true)
             {
-                rawImage = new Mat("../../../Pictures/default" + i + ".png");
+                video.Retrieve(rawImage);
+                //rawImage = new Mat("../../../Pictures/default" + i + ".png");
                 rawImage.CvtColor(ColorConversionCodes.RGBA2BGR);
                 var rects = detectFaces(rawImage);
                 processed = new Mat(rawImage, rects[0]);
@@ -70,7 +74,8 @@ namespace WinterWonderHack
                         break;
                 }
                 //Cv2.DestroyWindow("Bobby" + i);
-                Cv2.DestroyAllWindows();
+                //await Task.Delay(1);
+                //Cv2.DestroyAllWindows();
             }
             
             
