@@ -44,9 +44,10 @@ namespace WinterWonderHack
                 while (true)
                 {
                     int key = Cv2.WaitKey();
-                    if (key == 27)
+                    if (key == 27) //esc key
                         break;
                 }
+                Cv2.DestroyWindow("Bobby $" + i);
                 Cv2.DestroyWindow("Bobby #" + i);
                 Cv2.DestroyWindow("Bobby" + i);
                 ImageEncodingParam param = new ImageEncodingParam(ImwriteFlags.PngStrategy, (int)ImwritePNGFlags.StrategyDefault);
@@ -61,13 +62,45 @@ namespace WinterWonderHack
         {
             processed = new Mat();
             moreProcessed = new Mat();
-            Cv2.Canny(rawImage, processed, (pos * 25), 245);
-            Cv2.ImShow("Bobby" + i, processed);
+            Mat veryProcessed = new Mat();
+                
+                
             Size duck = new Size { Height = 7, Width = 7 };
-            Cv2.GaussianBlur(processed, moreProcessed, duck, 0, 0);
+            //Cv2.GaussianBlur(processed, moreProcessed, duck, 0, 5);
+            Size goose = new Size { Height = 3, Width = 3 };
+            
+            Cv2.Threshold(rawImage, processed, 96, 128, (ThresholdTypes) 1);
+            Cv2.Canny(processed, moreProcessed, (pos * 25), 245);
+            Cv2.Canny(rawImage, processed, (pos * 25), 245);
+
+            Cv2.MorphologyEx(processed, processed, (MorphTypes)4, Cv2.GetStructuringElement((MorphShapes)0, goose));
+            Cv2.MorphologyEx(moreProcessed, moreProcessed, (MorphTypes)4, Cv2.GetStructuringElement((MorphShapes)0, goose));
+            //Cv2.GaussianBlur(processed, processed, duck, 0, 5);
+            //Cv2.GaussianBlur(moreProcessed, moreProcessed, duck, 0, 5);
+            veryProcessed = findDifference(processed, moreProcessed);
+
+            Cv2.ImShow("Bobby" + i, processed);
             Cv2.ImShow("Bobby #" + i, moreProcessed);
-            
-            
+            Cv2.ImShow("Bobby $" + i, veryProcessed);
+        }
+
+        Mat findDifference(Mat image0, Mat image1)
+        {
+            Mat diff = new Mat();
+            Cv2.Absdiff(image0, image1, diff);
+
+            Mat difference = new Mat( diff.Rows,diff.Cols,MatType.CV_8UC1);
+
+            for(int k=0; k<image0.Rows; k++)
+            {
+                for(int m=0; m<image0.Cols; m++)
+                {
+                    Vec3b pix = diff.At<Vec3b>(k, m);
+                    double dist = Math.Sqrt(pix[0]^2 + pix[1]^2 + pix[2]^2);
+                    if (dist > 10.0) difference.At<byte>(k, m) = 255;
+                }
+            }
+            return difference;
         }
     }
 }
