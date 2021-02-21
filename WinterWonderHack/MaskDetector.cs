@@ -21,6 +21,7 @@ namespace WinterWonderHack
         int i = 0;
         DateTime lastPlayed = DateTime.Now;
         int compareLimit;
+        bool foundFace;
 
         public void Start()
         {
@@ -70,9 +71,13 @@ namespace WinterWonderHack
                 {
                     Console.WriteLine("Ope");
                     opeCounter++;
-                    if(opeCounter>10 & loopCounter>10)
+                    if(opeCounter>10 && loopCounter>10 && !foundFace)
                         video = VideoCapture.FromCamera(1);
                     continue;
+                }
+                else
+                {
+                    foundFace = true;
                 }
 
                 foreach(Rect rect in rects)
