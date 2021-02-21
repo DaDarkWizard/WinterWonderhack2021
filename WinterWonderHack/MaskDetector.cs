@@ -115,7 +115,7 @@ namespace WinterWonderHack
 
 
                     Console.WriteLine(totalDiff);
-                    if (totalDiff <= 100)
+                    if (totalDiff <= compareLimit)
                     {
                         if ((DateTime.Now - lastPlayed).Seconds > .5)
                         {
